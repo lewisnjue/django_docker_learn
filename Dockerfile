@@ -1,13 +1,12 @@
-FROM python
-COPY requirments.txt  /project/requirments.txt
+FROM ubuntu:latest
 
-RUN python3 -m venv /opt/env
-RUN /opt/env/bin/pip install -r /project/requirments.txt
+EXPOSE 80
 
-COPY ./src /project/src/
+RUN apt-get update && \
+    apt-get install nginx -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /project
 
-RUN  /opt/env/bin/python /project/src/manage.py migrate || true
+CMD [ "nginx","-g","daemon off;" ]
 
-CMD /opt/env/bin/python /project/src/manage.py runserver 0.0.0.0:8000
+
