@@ -1,12 +1,10 @@
-FROM ubuntu:latest
+FROM python:3-alpine
 
-EXPOSE 80
+WORKDIR /zone
 
-RUN apt-get update && \
-    apt-get install nginx -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache git && \
+    pip install git+https://github.com/fhsinchy/rmbyext.git#egg=rmbyext && \
+    apk del git
 
-
-CMD [ "nginx","-g","daemon off;" ]
-
+ENTRYPOINT [ "rmbyext" ]
 
